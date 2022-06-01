@@ -32,6 +32,7 @@
         align-items: center;
         flex-direction: column;
     }
+
     .container {
         width: 550px;
         height: 320px;
@@ -42,12 +43,17 @@
         background: blue;
         background: #c4c4c4;
     }
+
     .cont {
         background: #16191E;
         width: 800px;
-        height: 50px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    #time {
+
+    #clock {
         font-family: clock;
         font-size: 60px;
         width: 400px;
@@ -58,23 +64,81 @@
         align-items: center;
         background: #1c1c1c;
     }
+
+    .alarmcont {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        width: 60%;
+    }
+
+    #alarm {
+        font-family: clock;
+        font-size: 30px;
+        width: 150px;
+        height: 60px;
+        border: 1px solid gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #1c1c1c;
+        color: #fff;
+    }
+
+    #setAlarm {
+        font-family: clock;
+        font-size: 20px;
+        width: 80px;
+        height: 60px;
+        border: 1px solid gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: green;
+        color: #fff;
+        cursor: pointer;
+    }
 </style>
 
 <body>
     <script>
         $(document).ready(function() {
             setInterval(function() {
-                $("#time").load("time.php");
+                $("#clock").load("time.php");
             }, 1000);
         });
+
+        function setAlarm() {
+            var audio = new Audio('./sound.mp3');
+            setInterval(function() {
+                var clock = $("#clock").text().split(":").slice(0, 2);
+                var alarm = $("#alarm").val().split(":");
+                if (clock[0] == alarm[0] && clock[1] == alarm[1]) {
+                    $("#clock").css("background-color", "red");
+                    audio.play();
+                } else {
+                    $("#clock").css("background-color", "black");
+                    audio.pause();
+                }
+                console.log(clock);
+                console.log(alarm);
+            }, 1000);
+        }
     </script>
 
     <div class="container">
-        <div id="time">
-            00 : 00 : 00 PM
+        <div id="clock">
+            00 : 00 : 00
         </div>
     </div>
-    <div class="cont"></div>
+    <div class="cont">
+        <div class="alarmcont">
+            <h4>Alarm</h4>
+            <input type="time" name="alarm" id="alarm">
+            <button id="setAlarm" onclick="setAlarm()">Set</button>
+        </div>
+    </div>
 
 </body>
 
